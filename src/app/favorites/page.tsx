@@ -1,6 +1,6 @@
 'use client';
 
-import DogCard from '../../components/DogCard/DogCard';
+import DogCard from '../../components/elements/DogCard/DogCard';
 import { useFavoritesStore } from '@/store/favorites';
 
 export default function Favorites() {

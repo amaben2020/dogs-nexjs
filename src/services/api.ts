@@ -1,12 +1,22 @@
 import axios from 'axios';
 
-// TODO: move to .env file
-const API_BASE_URL = 'https://frontend-take-home-service.fetch.com';
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   withCredentials: true,
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      console.error('🚨 401 Error: Token has expired, Redirecting to login...');
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
 
 export const login = async (name: string, email: string) => {
   const response = await api.post('/auth/login', { name, email });
@@ -18,13 +28,12 @@ export const fetchBreeds = async () => {
   return response.data;
 };
 
-export const searchDogs = async (params: any) => {
+export const searchDogs = async (params: Record<string, string | number>) => {
   const response = await api.get('/dogs/search', { params });
   return response.data;
 };
 
 export const fetchDogsByIds = async (ids: string[]) => {
-  console.log('ids', ids);
   const response = await api.post('/dogs', ids);
   return response.data;
 };
@@ -33,3 +42,5 @@ export const generateMatch = async (ids: string[]) => {
   const response = await api.post('/dogs/match', ids);
   return response.data;
 };
+
+export default api;

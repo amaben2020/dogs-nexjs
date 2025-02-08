@@ -1,10 +1,10 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
 import {
   fetchBreeds,
-  searchDogs,
   fetchDogsByIds,
   generateMatch,
-} from '../services/api';
+  searchDogs,
+} from '@/services/api';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
 export const useBreeds = () => {
   return useQuery({
@@ -14,11 +14,10 @@ export const useBreeds = () => {
   });
 };
 
-export const useSearchDogs = (params: Record<string, any>) => {
+export const useSearchDogs = (params: Record<string, string>) => {
   return useQuery({
     queryKey: ['dogs', params],
     queryFn: () => searchDogs(params),
-    keepPreviousData: true, // Ensures smooth pagination
     enabled: Boolean(params), // Avoids unnecessary queries
   });
 };
