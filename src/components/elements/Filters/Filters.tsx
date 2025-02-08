@@ -1,15 +1,18 @@
-const Filters = ({
-  breeds,
-  selectedBreeds,
-  setFilters,
-}: {
-  breeds: Array<string[]>;
-}) => {
-  console.log(breeds);
-  console.log(selectedBreeds);
-  console.log(setFilters);
+import { Dispatch, SetStateAction } from 'react';
 
-  const handleBreedChange = (breed) => {
+interface IFilters {
+  breeds: Array<string>;
+  selectedBreeds: string[];
+  setFilters: Dispatch<
+    SetStateAction<{
+      breeds: string[] | never;
+      sort: string;
+    }>
+  >;
+}
+
+const Filters = ({ breeds, selectedBreeds, setFilters }: IFilters) => {
+  const handleBreedChange = (breed: string) => {
     setFilters((prev) => ({
       ...prev,
       breeds: prev.breeds.includes(breed)

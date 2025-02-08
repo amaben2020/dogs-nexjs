@@ -1,15 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
-interface Dog {
-  id: string;
-  name: string;
-  breed: string;
-  age: number;
-  zip_code: string;
-  img: string;
-}
-
 interface FavoritesState {
   favorites: Dog[];
   addFavorite: (dog: Dog) => void;

@@ -14,7 +14,9 @@ export const useBreeds = () => {
   });
 };
 
-export const useSearchDogs = (params: Record<string, string>) => {
+export const useSearchDogs = (
+  params: Record<string, string | number | string[] | undefined>
+) => {
   return useQuery({
     queryKey: ['dogs', params],
     queryFn: () => searchDogs(params),
@@ -23,7 +25,7 @@ export const useSearchDogs = (params: Record<string, string>) => {
 };
 
 export const useFetchDogsByIds = (ids: string[]) => {
-  return useQuery({
+  return useQuery<Dog[], Error>({
     queryKey: ['dogsByIds', ids],
     queryFn: () => fetchDogsByIds(ids),
     enabled: ids.length > 0, // Prevents unnecessary API calls

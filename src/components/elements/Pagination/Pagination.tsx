@@ -1,3 +1,5 @@
+import Button from '../Button';
+
 interface PaginationProps {
   page: number;
   setPage: (page: number) => void;
@@ -23,20 +25,22 @@ const Pagination: React.FC<PaginationProps> = ({
     return ranges;
   };
 
+  const handleNext = () => setPage(page + 1);
+  const handlePrev = () => setPage(page - 1);
+
   return (
-    <div className="flex justify-center items-center mt-6">
-      <button
-        onClick={() => setPage(page - 1)}
-        disabled={page === 1}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2 disabled:bg-gray-300"
-      >
-        Previous
-      </button>
+    <div className="flex justify-center gap-3 items-center my-12">
+      <Button
+        onClick={handlePrev}
+        text="Previous"
+        isDisabled={page >= totalPages}
+        variant="primary"
+      />
 
       <select
         value={page}
         onChange={(e) => setPage(Number(e.target.value))}
-        className="px-4 py-2 border rounded-lg"
+        className="px-4 py-2 border rounded-lg text-gray-700"
       >
         {getPageRanges().map((range) => (
           <option key={range.value} value={range.value}>
@@ -45,13 +49,12 @@ const Pagination: React.FC<PaginationProps> = ({
         ))}
       </select>
 
-      <button
-        onClick={() => setPage(page + 1)}
-        disabled={page >= totalPages}
-        className="px-4 py-2 bg-blue-500 text-white rounded-lg ml-2 disabled:bg-gray-300"
-      >
-        Next
-      </button>
+      <Button
+        onClick={handleNext}
+        text="Next"
+        isDisabled={page >= totalPages}
+        variant="primary"
+      />
     </div>
   );
 };

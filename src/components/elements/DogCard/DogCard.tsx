@@ -1,14 +1,6 @@
 import { useFavoritesStore } from '@/store/favorites';
 import Image from 'next/image';
-
-interface Dog {
-  id: string;
-  name: string;
-  breed: string;
-  age: number;
-  zip_code: string;
-  img: string;
-}
+import Button from '../Button';
 
 interface DogCardProps {
   dog: Dog;
@@ -59,14 +51,12 @@ const DogCard: React.FC<DogCardProps> = ({ dog }) => {
         </p>
       </div>
       <div className="px-6 py-4 absolute -right-4 -top-2">
-        <button
+        <Button
           onClick={toggleFavorite}
-          className={`px-3 py-1 rounded-full text-black shadow-sm ${
-            isFavorite ? 'bg-green-500' : 'bg-green-400'
-          } hover:bg-opacity-80 transition-colors duration-200`}
-        >
-          {isFavorite ? '-' : '+'}
-        </button>
+          text={isFavorite ? '-' : '+'}
+          isActive={isFavorite}
+          variant="primary"
+        />
       </div>
     </div>
   );

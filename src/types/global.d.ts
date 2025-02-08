@@ -1,4 +1,4 @@
-interface Dog {
+declare interface Dog {
   id: string;
   img: string;
   name: string;
