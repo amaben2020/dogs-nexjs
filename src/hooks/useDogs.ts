@@ -18,13 +18,18 @@ export const useBreeds = () => {
   });
 };
 
-export const useSearchDogs = (
-  params: Record<string, string | number | string[] | undefined>
-) => {
+export type TSearchParams = {
+  breeds: string[] | undefined;
+  sort: string;
+  size: number;
+  from: number;
+};
+
+export const useSearchDogs = (params: TSearchParams) => {
   return useQuery({
     queryKey: ['dogs', params],
     queryFn: () => searchDogs(params),
-    enabled: Boolean(params), // Avoids unnecessary queries
+    enabled: Boolean(params),
   });
 };
 
@@ -32,7 +37,7 @@ export const useFetchDogsByIds = (ids: string[]) => {
   return useQuery<Dog[], Error>({
     queryKey: ['dogsByIds', ids],
     queryFn: () => fetchDogsByIds(ids),
-    enabled: ids.length > 0, // Prevents unnecessary API calls
+    enabled: ids.length > 0,
   });
 };
 
@@ -51,7 +56,7 @@ export const useGenerateMatch = () => {
 export const useLogin = () => {
   const router = useRouter();
 
-  return useMutation<string, Error, any, unknown>({
+  return useMutation({
     mutationFn: async ({ name, email }: { name: string; email: string }) => {
       const data = await login(name, email);
       return data.data;

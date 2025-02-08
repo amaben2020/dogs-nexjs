@@ -1,3 +1,4 @@
+import { TSearchParams } from '@/hooks/useDogs';
 import axios from 'axios';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
@@ -28,7 +29,7 @@ export const fetchBreeds = async () => {
   return response.data;
 };
 
-export const searchDogs = async (params: Record<string, string | number>) => {
+export const searchDogs = async (params: TSearchParams) => {
   const response = await api.get('/dogs/search', { params });
   return response.data;
 };
