@@ -5,17 +5,26 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '@/schema';
 import { z } from 'zod';
 import { useLogin } from '@/hooks/useDogs';
+import { useState } from 'react';
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
+const TIME_TO_RECLICK = 3000;
+
 const LoginForm = () => {
   const { mutate } = useLogin();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleLogin = async (data: { name: string; email: string }) => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+
     try {
       await mutate({ name: data.name, email: data.email });
     } catch (error) {
       console.error('Login failed:', error);
+    } finally {
+      setTimeout(() => setIsSubmitting(false), TIME_TO_RECLICK);
     }
   };
 
@@ -58,9 +67,14 @@ const LoginForm = () => {
       {/* Submit Button */}
       <button
         type="submit"
-        className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 transition-colors duration-200"
+        disabled={isSubmitting}
+        className={`w-full py-2 rounded-lg transition-colors duration-200 ${
+          isSubmitting
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-green-500 hover:bg-green-600 text-white'
+        }`}
       >
-        Login
+        {isSubmitting ? 'Logging in...' : 'Login'}
       </button>
     </form>
   );
