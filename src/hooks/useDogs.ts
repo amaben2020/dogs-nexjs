@@ -2,9 +2,13 @@ import {
   fetchBreeds,
   fetchDogsByIds,
   generateMatch,
+  login,
+  logoutUser,
   searchDogs,
 } from '@/services/api';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 export const useBreeds = () => {
   return useQuery({
@@ -40,6 +44,56 @@ export const useGenerateMatch = () => {
     },
     onError: (error) => {
       console.error('Error generating match:', error);
+    },
+  });
+};
+
+export const useLogin = () => {
+  const router = useRouter();
+
+  return useMutation<string, Error, any, unknown>({
+    mutationFn: async ({ name, email }: { name: string; email: string }) => {
+      const data = await login(name, email);
+      return data.data;
+    },
+    onSuccess: () => {
+      toast.success(`Success`);
+
+      router.push('/search');
+    },
+    onError: () => {
+      toast.error('Something went wrong');
+    },
+    onMutate: () => {
+      toast.loading('Please wait...');
+    },
+    onSettled: () => {
+      toast.dismiss();
+    },
+  });
+};
+
+export const useLogout = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async () => {
+      await logoutUser();
+    },
+    onSuccess: () => {
+      toast.success(`Success`);
+
+      queryClient.invalidateQueries();
+      router.push('/login');
+    },
+    onError: () => {
+      toast.error('Something went wrong');
+    },
+    onMutate: () => {
+      toast.loading('Please wait...');
+    },
+    onSettled: () => {
+      toast.dismiss();
     },
   });
 };

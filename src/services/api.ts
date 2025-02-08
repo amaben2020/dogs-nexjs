@@ -43,4 +43,9 @@ export const generateMatch = async (ids: string[]) => {
   return response.data;
 };
 
+export const logoutUser = async () => {
+  const response = await api.post('/auth/logout');
+  return response.data;
+};
+
 export default api;

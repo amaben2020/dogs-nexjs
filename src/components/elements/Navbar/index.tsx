@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import { HoveredLink, Menu, MenuItem } from './Menu/index';
 import { cn } from '@/lib/utils';
+import { useLogout } from '@/hooks/useDogs';
 
 export function NavbarComponent() {
   return (
@@ -13,6 +14,7 @@ export function NavbarComponent() {
 
 function Navbar({ className }: { className?: string }) {
   const [active, setActive] = useState<string | null>(null);
+  const { mutate } = useLogout();
   return (
     <div
       className={cn(
@@ -30,7 +32,13 @@ function Navbar({ className }: { className?: string }) {
 
         <MenuItem setActive={setActive} active={active} item="Logout">
           <div className="flex flex-col space-y-4 text-sm">
-            <HoveredLink href="/hobby">Hobby</HoveredLink>
+            <button
+              onClick={async () => {
+                mutate();
+              }}
+            >
+              Logout
+            </button>
           </div>
         </MenuItem>
       </Menu>
