@@ -1,5 +1,6 @@
 import { TSearchParams } from '@/hooks/useDogs';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL!;
 
@@ -14,6 +15,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       console.error('🚨 401 Error: Token has expired, Redirecting to login...');
       window.location.href = '/login';
+      toast.loading('Logging out user');
     }
     return Promise.reject(error);
   }
